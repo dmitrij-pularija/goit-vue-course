@@ -53,7 +53,6 @@ export default {
   watch: {
     value() {
       if (this.isFirstInput) return;
-
       this.validate();
     },
   },
@@ -113,6 +112,7 @@ export default {
   outline: none;
   line-height: inherit;
   padding: 8px 15px;
+  border-radius: 5px;
 
   &::placeholder {
     color: inherit;

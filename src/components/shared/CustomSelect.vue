@@ -44,6 +44,7 @@ export default {
   max-width: 220px;
   width: 100%;
   border: 2px solid $main-color;
+  border-radius: 5px;
   font-size: 18px;
   outline: none;
   padding: 8px 15px;

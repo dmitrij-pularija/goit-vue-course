@@ -21,6 +21,7 @@ import CustomSelect from "../shared/CustomSelect";
 import CustomInput from "../shared/CustomInput";
 import SubmitButton from "../shared/Button";
 import { isRequired, charLimit } from "../../utils/validationRules";
+
 export default {
   name: "ApartmentsFilterForm",
   components: {
