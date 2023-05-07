@@ -9,7 +9,7 @@
         :rules="rules"
       />
       <SubmitButton class="form__submit" type="submit">
-        Подбір житла
+        Підбір житла
       </SubmitButton>
     </form>
   </Container>
