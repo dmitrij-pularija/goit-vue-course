@@ -28,8 +28,9 @@ import ApartmentsList from "../components/apartment/ApartmentsList.vue";
 import ApartmentsItem from "../components/apartment/ApartmentsItem.vue";
 import ApartmentsFilterForm from "../components/apartment/ApartmentsFilterForm.vue";
 import Container from "../components/shared/Container.vue";
-import { getApartmentsList } from '../services/apartments.service';
+import { getApartmentsList } from "../services/apartments.service";
 import SectionWithHeaderSpacer from "../components/shared/SectionWithHeaderSpacer.vue";
+import apartments from "../components/apartment/apartments";
 
 export default {
   name: "HomePage",
@@ -46,7 +47,7 @@ export default {
       apartments: [],
       filters: {
         city: "",
-        price: 0,
+        price: "",
       },
     };
   },
@@ -55,14 +56,18 @@ export default {
       return this.filterByCityName(this.filterByPrice(this.apartments));
     },
   },
-    async created() {
-      try {
-        const { data } = await getApartmentsList();
-        this.apartments = data;
-      } catch (error) {
-        console.error(error);
-      }
-    },
+  async created() {
+    try {
+      const { data } = await getApartmentsList();
+      this.apartments = data.length ? data : apartments;
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      this.$notify({ type: "error", text: message });
+    }
+  },
   methods: {
     filter({ city, price }) {
       this.filters.city = city;

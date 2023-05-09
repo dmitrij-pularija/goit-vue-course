@@ -51,11 +51,15 @@ export default {
           type: "success",
           title: "Замовлення додано",
         });
-      } catch (error) {
+      } catch ({
+        response: {
+          data: { message },
+        },
+      }) {
         this.$notify({
           type: "error",
           title: "Виникла помилка",
-          text: error.message,
+          text: message,
         });
       } finally {
         this.isLoading = false;
@@ -81,6 +85,7 @@ export default {
 
   &__photo {
     max-width: 100%;
+    border-radius: 5px;
   }
 
   &__description {

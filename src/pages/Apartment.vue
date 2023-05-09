@@ -1,5 +1,5 @@
 <template>
- <main class="apartment-page">
+  <main class="apartment-page">
     <SectionWithHeaderSpacer>
       <Container>
         <div v-if="apartment" class="apartment-page__content">
@@ -18,17 +18,17 @@
 </template>
 
 <script>
-import Container from '../components/shared/Container.vue';
-import ApartmentsMainInfo from '../components/apartment/ApartmentsMainInfo.vue';
-import ApartmentsOwner from '../components/apartment/AprtmentsOwner.vue';
-import ApartmentsReviews from '../components/reviews';
-// import apartment from '../components/apartment/apartments';
-import reviewsList from '../components/reviews/reviews.json';
-import { getApartmentById } from '../services/apartments.service';
-import SectionWithHeaderSpacer from '../components/shared/SectionWithHeaderSpacer.vue';
+import Container from "../components/shared/Container.vue";
+import ApartmentsMainInfo from "../components/apartment/ApartmentsMainInfo.vue";
+import ApartmentsOwner from "../components/apartment/AprtmentsOwner.vue";
+import ApartmentsReviews from "../components/reviews";
+import reviewsList from "../components/reviews/reviews.json";
+import apartments from "../components/apartment/apartments";
+import { getApartmentById } from "../services/apartments.service";
+import SectionWithHeaderSpacer from "../components/shared/SectionWithHeaderSpacer.vue";
 
-    export default {
-        name: 'ApartmentPage',
+export default {
+  name: "ApartmentPage",
   components: {
     Container,
     ApartmentsMainInfo,
@@ -52,11 +52,19 @@ import SectionWithHeaderSpacer from '../components/shared/SectionWithHeaderSpace
       const { data } = await getApartmentById(id);
 
       this.apartment = data;
-    } catch (error) {
-      console.error(error);
+    } catch ({
+      response: {
+        data: { message },
+      },
+    }) {
+      this.$notify({ type: "error", text: message });
+    } finally {
+      if (!this.apartment) this.apartment = apartments.filter((apartment) => {
+        return apartment.id === this.$route.params.id;
+      })[0];
     }
   },
-    }
+};
 </script>
 
 <style lang="scss" scoped>

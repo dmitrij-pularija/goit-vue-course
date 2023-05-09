@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper-input">
     <input
-    v-on="listeners"
+      v-on="listeners"
       v-bind="$attrs"
       @blur="blurHandler"
-      :value="value"
+      :value="modelValue"
       class="custom-input"
       :class="!isValid && 'custom-input--error'"
     />
@@ -27,9 +27,10 @@ export default {
       default: null,
     },
   },
+  emits: ["update:modelValue"],
   inheritAttrs: false,
   props: {
-    value: {
+    modelValue: {
       type: String,
       default: "",
     },
@@ -45,13 +46,12 @@ export default {
   computed: {
     listeners() {
       return {
-        // ...this.$listeners,
-        input: (event) => this.$emit("input", event.target.value),
+        input: (event) => this.$emit("update:modelValue", event.target.value),
       };
     },
   },
   watch: {
-    value() {
+    modelValue() {
       if (this.isFirstInput) return;
       this.validate();
     },
@@ -69,7 +69,7 @@ export default {
   methods: {
     validate() {
       this.isValid = this.rules.every((rule) => {
-        const { hasPassed, message } = rule(this.value);
+        const { hasPassed, message } = rule(this.modelValue);
 
         if (!hasPassed) {
           this.error = message || this.errorMessage;
@@ -90,7 +90,7 @@ export default {
     reset() {
       this.isFirstInput = true;
       this.isValid = true;
-      this.$emit("input", "");
+      this.$emit("update:modelValue", "");
     },
   },
 };

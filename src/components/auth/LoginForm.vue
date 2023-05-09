@@ -19,22 +19,28 @@
         :rules="passwordRules"
         class="login__input"
       />
-      <Button class="login__btn" type="submit" :loading="loading">Увійти</Button>
+      <Button class="login__btn" type="submit" :loading="loading"
+        >Увійти</Button
+      >
     </Form>
   </AuthContainer>
 </template>
 
 <script>
-import Form from '../shared/CustomForm.vue';
-import CustomInput from '../shared/CustomInput.vue';
-import Button from '../shared/Button.vue';
-import AuthContainer from './AuthContainer.vue';
-import MainTitle from '../shared/MainTitle.vue';
-import { emailValidation, passwordValidation, isRequired, } from '../../utils/validationRules';
-// import { mapActions } from 'vuex';
+import Form from "../shared/CustomForm.vue";
+import CustomInput from "../shared/CustomInput.vue";
+import Button from "../shared/Button.vue";
+import AuthContainer from "./AuthContainer.vue";
+import MainTitle from "../shared/MainTitle.vue";
+import {
+  emailValidation,
+  passwordValidation,
+  isRequired,
+} from "../../utils/validationRules";
+import { mapActions } from "vuex";
 
-    export default {
-        name: 'LoginForm',
+export default {
+  name: "LoginForm",
   components: {
     Form,
     CustomInput,
@@ -46,8 +52,8 @@ import { emailValidation, passwordValidation, isRequired, } from '../../utils/va
     return {
       loading: false,
       formData: {
-        email: '',
-        password: '',
+        email: "",
+        password: "",
       },
     };
   },
@@ -67,7 +73,7 @@ import { emailValidation, passwordValidation, isRequired, } from '../../utils/va
     },
   },
   methods: {
-    // ...mapActions('auth', ['login']),
+    ...mapActions("auth", ["login"]),
     async handleSubmit() {
       const { form } = this.$refs;
       const isFormValid = form.validate();
@@ -77,28 +83,31 @@ import { emailValidation, passwordValidation, isRequired, } from '../../utils/va
           this.loading = true;
           await this.login(this.formData);
 
-          this.$router.push({ name: 'homepage' });
+          this.$router.push({ name: "homepage" });
           form.reset();
-        } catch (error) {
+        } catch ({
+          response: {
+            data: { message },
+          },
+        }) {
           this.$notify({
-            type: 'error',
-            title: 'Виникла помилка',
-            text: error.message,
+            type: "error",
+            title: "Виникла помилка:",
+            text: message,
           });
         } finally {
           this.loading = false;
         }
       }
     },
-  },        
-    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .login {
-border-radius: 10px;
+  border-radius: 10px;
   &__form {
-    // display: block;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -110,7 +119,6 @@ border-radius: 10px;
   }
 
   &__input {
-    // margin-bottom: 23px;
     width: 100%;
   }
 

@@ -4,13 +4,21 @@
     :disabled="loading"
     :class="{ btn: true, 'btn--outlined': outlined }"
   >
-    <slot></slot>
+    <CircleLoader v-if="loading" width="38" height="38" class="btn__loader" />
+    <span class="btn__content" :class="contentStyle">
+      <slot></slot>
+    </span>
   </button>
 </template>
 
 <script>
+import CircleLoader from "../loaders/Circle.vue";
+
 export default {
   name: "ButtonShared",
+  components: {
+    CircleLoader,
+  },
   props: {
     type: {
       type: String,

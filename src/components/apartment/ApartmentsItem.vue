@@ -70,6 +70,8 @@ export default {
 
   &__inner {
     position: relative;
+    border-radius: 5px;
+    overflow: hidden;
   }
 
   &__content {

@@ -1,6 +1,6 @@
 <template>
   <section class="apartments-owner">
-    <h2 class="apartments-owner__title">Информация о владельце:</h2>
+    <h2 class="apartments-owner__title">Информація про власника:</h2>
     <p class="apartments-owner__info">{{ owner.name }}</p>
     <p class="apartments-owner__info">tel: {{ owner.phone }}</p>
     <p class="apartments-owner__info">email: {{ owner.email }}</p>
@@ -26,6 +26,7 @@ export default {
   padding: 20px;
   background: $card-bg;
   font-weight: 400;
+  border-radius: 5px;
 
   &__title {
     font-size: 18px;

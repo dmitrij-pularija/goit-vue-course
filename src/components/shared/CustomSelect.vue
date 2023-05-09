@@ -1,11 +1,11 @@
 <template>
-  <select v-on="listeners" class="custom-select">
-    <option
-      v-for="item in formatedItems"
-      :key="item.value"
-      :value="item.value"
-      :selected="item.selected"
-    >
+  <select
+    v-on="listeners"
+    v-bind="$attrs"
+    v-model="selectedValue"
+    class="custom-select"
+  >
+    <option v-for="item in formatedItems" :key="item.value" :value="item.value">
       {{ item.label }}
     </option>
   </select>
@@ -14,23 +14,46 @@
 <script>
 export default {
   name: "CustomSelect",
+  emits: ["update:input"],
+  data() {
+    return {
+      selectedValue: this.value,
+    };
+  },
+  watch: {
+    value(newValue) {
+      this.selectedValue = newValue;
+    },
+  },
   props: {
     items: {
       type: Array,
       required: true,
     },
+    value: {
+      type: String,
+      default: "",
+    },
   },
   computed: {
     listeners() {
       return {
-        //   ...this.$listeners,
-        input: (event) => this.$emit("input", event.target.value),
+        input: (event) => this.$emit("update:input", event.target.value),
       };
     },
     formatedItems() {
       return this.items.map((item) => {
         return typeof item === "object" ? item : { value: item, label: item };
       });
+    },
+
+    computedValue: {
+      get() {
+        return this.value;
+      },
+      set(newValue) {
+        this.$emit("update:input", newValue);
+      },
     },
   },
 };

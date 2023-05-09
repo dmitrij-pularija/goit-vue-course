@@ -1,92 +1,78 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
+import ErrorPage from "../pages/ErrorPage.vue";
+import store from "../components/vuex/store";
 
-
-import ErrorPage from '../pages/ErrorPage.vue';
-// import store from './store';
-
-const HomePage = () => import('../pages/Homepage.vue');
-const Apartment = () => import('../pages/Apartment.vue');
-const LoginPage = () => import('../pages/Login.vue');
-const RegistrationPage = () => import('../pages/Registration.vue');
-// const MyOrdersPage = () => import('./pages/MyOrders');
+const HomePage = () => import("../pages/Homepage.vue");
+const Apartment = () => import("../pages/Apartment.vue");
+const LoginPage = () => import("../pages/Login.vue");
+const RegistrationPage = () => import("../pages/Registration.vue");
+const MyOrdersPage = () => import("../pages/MyOrders.vue");
 
 const routes = [
   {
-    path: '/',
+    path: "/",
     component: HomePage,
-    name: 'homepage',
+    name: "homepage",
   },
   {
-    path: '/apartments/:id',
+    path: "/apartments/:id",
     component: Apartment,
-    name: 'apartment',
+    name: "apartment",
     meta: {
       requiresAuth: true,
     },
   },
-  // {
-  //   path: '/my-orders',
-  //   component: MyOrdersPage,
-  //   name: 'my-orders',
-  //   meta: {
-  //     requiresAuth: true,
-  //   },
-  // },
   {
-    path: '/login',
+    path: "/my-orders",
+    component: MyOrdersPage,
+    name: "my-orders",
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/login",
     component: LoginPage,
-    name: 'login-page',
+    name: "login-page",
     meta: {
       hideForAuth: true,
     },
   },
   {
-    path: '/registration',
+    path: "/registration",
     component: RegistrationPage,
-    name: 'registration-page',
+    name: "registration-page",
     meta: {
       hideForAuth: true,
     },
   },
   {
-    path: '/:pathMatch(.*)',
+    path: "/:pathMatch(.*)",
     component: ErrorPage,
-    name: 'error-page',
+    name: "error-page",
   },
 ];
 
-// const router = new VueRouter({
-//   routes,
-//   mode: 'history',
-// });
-  // const routes = [
-  //   { path: '/', component: HomePage, name: 'homepage', },
-  //   { path: '/apartments/:id', component: Apartment, name: 'apartment', },
-  //   { path: '/:pathMatch(.*)', name: 'bad-not-found', component: ErrorPage },
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
 
-  // ]
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = store.getters["auth/isLoggedIn"];
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isLoggedIn) {
+      next({ name: "login-page" });
+    }
+  }
 
-  const router = createRouter({
-    history: createWebHistory(),
-    routes,
-  })
+  if (to.matched.some((record) => record.meta.hideForAuth)) {
+    if (isLoggedIn) {
+      next({ name: "homepage" });
+    }
+  }
 
-// router.beforeEach((to, from, next) => {
-//   const isLoggedIn = store.getters['auth/isLoggedIn'];
-
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (!isLoggedIn) {
-//       next({ name: 'login-page' });
-//     }
-//   }
-
-//   if (to.matched.some((record) => record.meta.hideForAuth)) {
-//     if (isLoggedIn) {
-//       next({ name: 'homepage' });
-//     }
-//   }
-
-//   next();
-// });
+  next();
+});
 
 export default router;

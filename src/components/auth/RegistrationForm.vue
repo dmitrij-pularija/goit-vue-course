@@ -54,7 +54,7 @@ import {
   passwordValidation,
   isRequired,
 } from "../../utils/validationRules";
-// import { mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: "RegistrationForm",
@@ -103,7 +103,7 @@ export default {
     },
   },
   methods: {
-    // ...mapActions('auth', ['registerUser']),
+    ...mapActions('auth', ['registerUser']),
     async handleSubmit() {
       const { form } = this.$refs;
       const isFormValid = form.validate();
@@ -121,11 +121,11 @@ export default {
 
           this.$router.push({ name: "homepage" });
           form.reset();
-        } catch (error) {
+        } catch ({ response: { data: { message } } }) {
           this.$notify({
             type: "error",
-            title: "Виникла помилка",
-            text: error.message,
+            title: "Виникла помилка:",
+            text: message,
           });
         } finally {
           this.loading = false;

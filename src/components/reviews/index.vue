@@ -80,7 +80,7 @@ export default {
   margin-top: 20px;
   background: $card-bg;
   padding: 0 2px;
-
+  border-radius: 5px;
   &__heading {
     padding: 20px 20px 10px;
   }

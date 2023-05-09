@@ -1,9 +1,9 @@
 <template>
   <Container>
     <form class="form" @submit.prevent="handleSubmit">
-      <CustomSelect :items="cities" v-model="city" class="form__select" />
+      <CustomSelect :items="cities" v-model="this.city" class="form__select" />
       <CustomInput
-        v-model="price"
+        v-model="this.price"
         placeholder="Вартість, від"
         error-message="Не повинно бути пустим"
         :rules="rules"
@@ -17,9 +17,9 @@
 
 <script>
 import Container from "../shared/Container.vue";
-import CustomSelect from "../shared/CustomSelect";
-import CustomInput from "../shared/CustomInput";
-import SubmitButton from "../shared/Button";
+import CustomSelect from "../shared/CustomSelect.vue";
+import CustomInput from "../shared/CustomInput.vue";
+import SubmitButton from "../shared/Button.vue";
 import { isRequired, charLimit } from "../../utils/validationRules";
 
 export default {
@@ -36,6 +36,7 @@ export default {
       city: "",
     };
   },
+  emits: ["submit"],
   computed: {
     rules() {
       return [isRequired, charLimit(10)];
