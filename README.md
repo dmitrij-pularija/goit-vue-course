@@ -1,3 +1,3 @@
 goit-vue-course
 
-https://dmitrij-pularija.github.io/goit-vue-course/
+https://goit-vue-course.vercel.app
